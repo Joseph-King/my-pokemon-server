@@ -1,0 +1,21 @@
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.7
+    container_name: keycloak
+    restart: always
+    command: start-dev
+    depends_on:
+      - keycloak-db
+    env_file: ./keycloak_env/local.env
+  
+  keycloak-db:
+    image: postgres:15
+    contianer_name: keycloak-db
+    env_file: ./keycloak_env/local.env
+    volumes:
+      - kc-data:/var/lib/postgresql/data
+
+volumes:
+  kc-data:
+    driver: local

@@ -1,0 +1,58 @@
+services:
+
+  elasticsearch:
+    image: elastic
+    container_name: elastic
+    environment:
+      - "discovery.type=single-node"
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=elastic
+    mem_limit: 2g
+    expose:
+      - "9200"
+    ports:
+      - "9200:9200"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ['CMD', 'curl', '--user', 'elastic:elastic', 'http://localhost:9200']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.9.0
+    container_name: kibana
+    links:
+      - "elasticsearch"
+    environment:
+      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_PASSWORD=kibana
+    volumes:
+      - kb-data:/usr/share/kibana/data
+
+  logstash:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.7
+    container_name: keycloak
+    restart: always
+    command: start-dev
+    depends_on:
+      - keycloak-db
+    env_file: ./keycloak_env/local.env
+  
+  keycloak-db:
+    image: postgres:15
+    contianer_name: keycloak-db
+    env_file: ./keycloak_env/local.env
+    volumes:
+      - kc-data:/var/lib/postgresql/data
+
+volumes:
+  es-data:
+    driver: local
+  kb-data:
+    driver: local
+  kc-data:
+    driver: local
