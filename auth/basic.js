@@ -4,7 +4,7 @@ module.exports = function(authHeader, env){
         const user = auth[0];
         const pass = auth[1];
 
-        if(env.USER === user && env.PASS === pass){
+        if(env.USERNAME === user && env.PASSWORD === pass){
             let result = {
                 res: true,
                 user: user ? user : undefined
@@ -16,6 +16,8 @@ module.exports = function(authHeader, env){
                 res: false,
                 user: user ? user : undefined
             }
+
+            resolve(result);
         }
     })
 }

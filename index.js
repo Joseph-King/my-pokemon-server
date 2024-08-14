@@ -61,6 +61,9 @@ app.use(async (req, res, next) => {
     }
 })
 
+//Endpoints
+const discoveryEndpoint = require('./endpoints/discovery')(app, process.env);
+
 //STARTS SERVER
 const PORT = process.env.PORT
 app.listen(PORT, () => {

@@ -1,11 +1,8 @@
 services:
   my-pokemon-server:
-    image: my-pokemon-server
+    image: josephck1997/my-pokemon-server
     restart: always
     container_name: my-pokemon-server
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
     env_file: ../../environment/local-all.env
     ports:
       - 3000:3000
