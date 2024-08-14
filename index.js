@@ -1,8 +1,17 @@
 const express = require('express');
 const app = express();
 
+//Ingest JSON
 app.use(express.json());
 
+//ENV FILES
+try {
+    require('dotenv').config({ path: `./environment/${process.env.NODE_ENV}.env`});
+} catch(e) {
+    console.log('environment file does not exist in container')
+}
+
+//CORS
 const cors = require('cors');
 if(process.env.ENV === 'dev'){
     app.use(cors());
@@ -20,6 +29,7 @@ if(process.env.ENV === 'dev'){
     app.use(cors(corsOptions));
 }
 
+//AUTH
 app.use(async (req, res, next) => {
     const authHeader = req.headers.authorization;
     console.log(`ORIGIN: ${req.headers.origin}`);
@@ -51,6 +61,7 @@ app.use(async (req, res, next) => {
     }
 })
 
+//STARTS SERVER
 const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server Listening at port: ${PORT}`);
