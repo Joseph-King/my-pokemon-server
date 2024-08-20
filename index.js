@@ -6,9 +6,13 @@ app.use(express.json());
 
 //ENV FILES
 try {
-    require('dotenv').config({ path: `./environment/${process.env.NODE_ENV}.env`});
+    if(process.env.NODE_ENV)
+        require('dotenv').config({ path: `./environment/${process.env.NODE_ENV}.env`});
+    else
+        require('dotenv').config({ path: `./environment/local-dev.env`});
 } catch(e) {
-    console.log('environment file does not exist in container')
+    console.log('environment file does not exist in container, using local-dev.env');
+    require('dotenv').config({ path: `./environment/local-dev.env`});
 }
 
 //CORS
@@ -16,7 +20,7 @@ const cors = require('cors');
 if(process.env.ENV === 'dev'){
     app.use(cors());
 } else {
-    var corOptions = {
+    var corsOptions = {
         origin: (origin, callback) => {
             if(process.env.ALLOWED_ORIGNS.indexOf(origin) !== -1){
                 callback(null, true);

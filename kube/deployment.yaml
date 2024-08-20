@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: my-pokemon-server-prod
+  name: my-pokemon-server
   labels:
     app: my-pokemon-server
 spec:
@@ -17,8 +17,8 @@ spec:
       containers:
       - name: my-pokemon-server
         image: josephck1997/my-pokemon-server:latest
+        envFrom:
+          - configMapRef:
+              name: app-env
         ports:
         - containerPort: 3000
-        envFrom:
-          - secretRef:
-            name: ../environment/local-all.env

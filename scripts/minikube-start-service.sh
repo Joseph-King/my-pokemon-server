@@ -1,0 +1,1 @@
+minikube service my-pokemon-server-service
