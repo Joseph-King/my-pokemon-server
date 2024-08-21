@@ -22,3 +22,14 @@ spec:
               name: app-env
         ports:
         - containerPort: 3000
+      - name: elastic
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+        env:
+        - name: discovery.type
+          value: 'single-node'
+        - name: xpack.security.enabled
+          value: 'true'
+        - name: ELASTIC_PASSWORD
+          value: 'elastic'
+        ports:
+        - containerPort: 9200

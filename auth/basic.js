@@ -4,6 +4,11 @@ module.exports = function(authHeader, env){
         const user = auth[0];
         const pass = auth[1];
 
+        console.log(user);
+        console.log(env.USERNAME);
+        console.log(pass);
+        console.log(env.PASSWORD);
+        
         if(env.USERNAME === user && env.PASSWORD === pass){
             let result = {
                 res: true,
